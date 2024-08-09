@@ -3,6 +3,10 @@ from paddle import *
 from ball import *
 
 pygame.init()
+
+# Load assets
+font = pygame.font.Font("font/game_over.ttf",70)
+
 # Screen
 width,height = 900,600
 screen = pygame.display.set_mode((width,height))
@@ -13,6 +17,10 @@ paddle_1 = Paddle(0,height//2)
 paddle_2 = Paddle(width-15,height//2)
 ball = Ball(width//2-10,height//2-10)
 clock = pygame.time.Clock()
+
+def score(screen,winner:str):
+    score = font.render(winner,True,"white")
+    screen.blit(score,(width//2-70,height//2))
 
 # Mainloop
 running = True
@@ -47,13 +55,21 @@ while running:
         elif ball.speed_x < 0:
             ball.speed_y *= -1
 
+    # Decide the winner
+    if ball.x < 0:
+        score(screen,"player 2 win!")
+    elif ball.x > width:
+        score(screen,"player 1 win!")
+
     paddle_1.set_direction()
     paddle_2.set_direction()
 
     paddle_1.draw_paddle(screen)
     paddle_2.draw_paddle(screen)
     ball.draw_ball(screen)
+
     ball.ball_vel()
+
     pygame.display.update()
 
     clock.tick(60)
