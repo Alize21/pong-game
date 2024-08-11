@@ -42,12 +42,21 @@ while running:
     if keys[pygame.K_l]:
         paddle_2.direction = "down"
 
-    # Check collision with ball
-    if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
-        ball.speed_x *= -1
+    # Check collision paddle with ball
     if ball.x < paddle_1.x+15 and ball.x+10 > paddle_1.x and ball.y < paddle_1.y+130 and ball.y+10 > paddle_1.y:
+        paddle_center = paddle_1.y + (paddle_1.height/2)
+        offset = (ball.y-10)-paddle_center
+        ball.speed_y += offset/9
         ball.speed_x *= -1
+        ball.speed_y *= -1
 
+    if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
+        paddle_center = paddle_2.y + (paddle_2.height/2)
+        offset = (ball.y+10)-paddle_center
+        ball.speed_y += offset/9
+        ball.speed_x *= -1
+        ball.speed_y *= -1
+        
     # Make the ball bounce back evertime it hit the wall
     if ball.y < 0 or ball.y > height-10:
         if ball.speed_x > 0:
@@ -71,6 +80,7 @@ while running:
     ball.ball_vel()
 
     pygame.display.update()
+
 
     clock.tick(60)
 
