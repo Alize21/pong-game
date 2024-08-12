@@ -5,6 +5,7 @@ class Paddle:
     def __init__(self,x,y):
         self.x = x
         self.y = y
+        self.height = 150
         self.direction = None
         self.speed = 10
 
@@ -17,4 +18,4 @@ class Paddle:
             self.direction = None
 
     def draw_paddle(self,screen):
-        pygame.draw.rect(screen, "white", (self.x, self.y, 15, 130))
+        pygame.draw.rect(screen, "white", (self.x, self.y, 15, self.height))

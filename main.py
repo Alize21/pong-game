@@ -41,6 +41,15 @@ while running:
         paddle_2.direction = "up"
     if keys[pygame.K_l]:
         paddle_2.direction = "down"
+    # Prevent the paddle from crossing the window
+    if paddle_1.y < 0:
+        paddle_1.y = 0
+    if paddle_1.y + paddle_1.height > height:
+        paddle_1.y = height - paddle_1.height
+    if paddle_2.y < 0:
+        paddle_2.y = 0
+    if paddle_2.y + paddle_2.height > height:
+        paddle_2.y = height - paddle_2.height
 
     # Check collision with ball
     if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
