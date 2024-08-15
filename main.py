@@ -1,6 +1,7 @@
 import pygame
 from paddle import *
 from ball import *
+import math
 
 pygame.init()
 
@@ -44,19 +45,49 @@ while running:
 
     # Check collision paddle with ball
     if ball.x < paddle_1.x+15 and ball.x+10 > paddle_1.x and ball.y < paddle_1.y+130 and ball.y+10 > paddle_1.y:
-        paddle_center = paddle_1.y + (paddle_1.height/2)
-        offset = (ball.y-10)-paddle_center
-        ball.speed_y += offset/9
-        ball.speed_x *= -1
-        ball.speed_y *= -1
-
-    if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
-        paddle_center = paddle_2.y + (paddle_2.height/2)
-        offset = (ball.y+10)-paddle_center
-        ball.speed_y += offset/9
-        ball.speed_x *= -1
-        ball.speed_y *= -1
         
+        paddle_center = paddle_1.y + (paddle_1.height/2)
+
+        offset = (ball.y+10)-paddle_center
+
+        max_offset = paddle_1.height/2
+        normalized_offset = offset / max_offset
+        max_angle = math.radians(60)  # 30 derajat diubah menjadi radian
+
+        # Kemudian hitung sudut pantulan:
+        angle = normalized_offset * max_angle
+
+        # original speed
+        original_speed = math.sqrt(ball.speed**2 + ball.speed**2)
+
+        # Tentukan kecepatan baru berdasarkan sudut:
+        ball.speed_x = original_speed * math.cos(angle)
+        ball.speed_y = original_speed * math.sin(angle)
+ 
+    if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
+
+        paddle_center = paddle_2.y + (paddle_2.height/2)
+
+        offset = (ball.y+10)-paddle_center
+
+        max_offset = paddle_2.height/2
+        normalized_offset = offset / max_offset
+        max_angle = math.radians(60)  # 30 derajat diubah menjadi radian
+
+        # Kemudian hitung sudut pantulan:
+        angle = normalized_offset * max_angle
+
+        # original speed
+        original_speed = math.sqrt(ball.speed**2 + ball.speed**2)
+
+        # Tentukan kecepatan baru berdasarkan sudut:
+        ball.speed_x = original_speed * math.cos(angle)
+        ball.speed_y = original_speed * math.sin(angle)
+
+        ball.speed_x *= -1
+        ball.speed_y *= -1  
+        
+
     # Make the ball bounce back evertime it hit the wall
     if ball.y < 0 or ball.y > height-10:
         if ball.speed_x > 0:
