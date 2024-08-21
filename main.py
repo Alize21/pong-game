@@ -1,6 +1,7 @@
 import pygame
 from paddle import *
 from ball import *
+import math
 
 pygame.init()
 
@@ -51,12 +52,48 @@ while running:
     if paddle_2.y + paddle_2.height > height:
         paddle_2.y = height - paddle_2.height
 
-    # Check collision with ball
-    if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
-        ball.speed_x *= -1
+    # Check collision paddle with ball
     if ball.x < paddle_1.x+15 and ball.x+10 > paddle_1.x and ball.y < paddle_1.y+130 and ball.y+10 > paddle_1.y:
-        ball.speed_x *= -1
+        
+        paddle_center = paddle_1.y + (paddle_1.height/2)
 
+        # count the offset position
+        offset = (ball.y+10)-paddle_center
+        max_offset = paddle_1.height/2
+        normalized_offset = offset / max_offset
+
+        max_angle = math.radians(60)  # 60 degrees to radians
+
+        # Bounce angle
+        angle = normalized_offset * max_angle
+
+        # original speed
+        original_speed = math.sqrt(ball.speed**2 + ball.speed**2)
+        
+        # Add a new speed base on angle
+        ball.speed_x = original_speed * math.cos(angle)
+        ball.speed_y = original_speed * math.sin(angle)
+ 
+    if ball.x < paddle_2.x+15 and ball.x+10 > paddle_2.x and ball.y < paddle_2.y+130 and ball.y+10 > paddle_2.y:
+
+        paddle_center = paddle_2.y + (paddle_2.height/2)
+
+        offset = (ball.y+10)-paddle_center
+
+        max_offset = paddle_2.height/2
+        normalized_offset = offset / max_offset
+        max_angle = math.radians(60)  
+
+        angle = normalized_offset * max_angle
+
+        original_speed = math.sqrt(ball.speed**2 + ball.speed**2)
+
+        ball.speed_x = original_speed * math.cos(angle)
+        ball.speed_y = original_speed * math.sin(angle)
+
+        ball.speed_x *= -1
+        ball.speed_y *= -1  
+        
     # Make the ball bounce back evertime it hit the wall
     if ball.y < 0 or ball.y > height-10:
         if ball.speed_x > 0:
@@ -80,6 +117,7 @@ while running:
     ball.ball_vel()
 
     pygame.display.update()
+
 
     clock.tick(60)
 
