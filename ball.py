@@ -5,7 +5,7 @@ class Ball:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.speed = 5
+        self.speed = 6
         self.speed_x = self.speed
         self.speed_y = self.speed
 

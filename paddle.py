@@ -13,7 +13,7 @@ class Paddle:
         if self.direction == "up":
             self.y -= self.speed
             self.direction = None
-        if self.direction == "down":
+        elif self.direction == "down":
             self.y += self.speed
             self.direction = None
 
