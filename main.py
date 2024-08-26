@@ -17,14 +17,17 @@ restart_button_img = pygame.image.load("assets/button/restart.png").convert_alph
 exit_button_img = pygame.image.load("assets/button/exit.png").convert_alpha()
 
 # Initialization
-paddle_1 = Paddle(0,height//2)
-paddle_2 = Paddle(width-15,height//2)
+paddle_1 = Paddle(20,height//2)
+paddle_2 = Paddle(width-35,height//2)
 ball = Ball(width//2-10,height//2-10)
 restart_button = Button(610//2,580//2,restart_button_img,0.3)
 exit_button = Button(930//2,580//2,exit_button_img,0.3)
 clock = pygame.time.Clock()
 
-def score(screen,winner:str):
+# Score
+winner = None
+def draw_score(screen):
+
     score = font.render(winner,True,"white")
     screen.blit(score,(width//2-83,height//2-65))
 
@@ -77,6 +80,7 @@ while running:
             angle = normalized_offset * max_angle
 
             # original speed
+            global original_speed
             original_speed = math.sqrt(ball.speed**2 + ball.speed**2)
             
             # Add a new speed base on angle
@@ -130,15 +134,25 @@ while running:
     elif state == "pause":
 
         if ball.x < 0:
-            score(screen,"player 2 win!")
-            
+            draw_score(screen)
+            winner = "player 2 win!"          
         elif ball.x > width:
-            score(screen,"player 1 win!")        
+            draw_score(screen)
+            winner = "player 1 win!"        
 
         if restart_button.click():
             ball.x,ball.y = width//2-10,height//2-10
             state = "play"
-            ball.speed = 5
+
+            # Change y velocity to 0 at the start of the game
+            if winner == "player 1 win!":
+                ball.speed_x = 7
+                ball.speed_y = 0
+                print("player 1 win")
+            elif winner == "player 2 win!":
+                ball.speed_x = -7
+                ball.speed_y = 0
+                print("player 2 win")
 
         if exit_button.click():
             running = False

@@ -5,7 +5,7 @@ class Paddle:
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.height = 160
+        self.height = 130
         self.direction = None
         self.speed = 12
 
